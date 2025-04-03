@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-    <div :class="['grid-row-item', isCorrect ? 'grid-row-item__correct' : isInside ? 'grid-row-item__inside' : '']">
+    <div :class="['grid-row-item', letter === ' ' ? 'grid-row-item__space' : isCorrect ? 'grid-row-item__correct' : isInside ? 'grid-row-item__inside' : '']">
         {{ letter.toUpperCase()  }}
     </div>
 </template>
@@ -36,5 +36,9 @@ const props = withDefaults(defineProps<{
 
     .grid-row-item__inside {
         background-color: orange;
+    }
+
+    .grid-row-item__space {
+        background-color: blue;
     }
 </style>

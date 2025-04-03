@@ -7,6 +7,7 @@ const props = defineProps<{
     currentAttempt : number
     attempts: string[]
     input: string|null
+    class: string
 }>()
 
 </script>
@@ -21,6 +22,7 @@ const props = defineProps<{
             :is-current-attempt="n === currentAttempt"
             :is-active="n === currentAttempt"
             :attempt="attempts?.[n-1] ?? null"
+            :class="class"
         />
     </div>
 </template>
@@ -33,4 +35,16 @@ const props = defineProps<{
     gap: 10px;
     align-items: center;
 }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.shake {
+  animation: shake 1s ease-in-out;
+}
+
 </style>
