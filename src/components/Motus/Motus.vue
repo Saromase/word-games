@@ -12,7 +12,7 @@ const className = ref<string>("");
 const lastGames = ref<{ [key: string]: string[] }>({});
 const attempts = ref<string[]>([]);
 const currentAttempt = ref<number>(1)
-const winAnimation = ref<boolean>(true)
+const winAnimation = ref<boolean>(false)
 
 
 const handleInputEvent = (event: KeyboardEvent) => {
