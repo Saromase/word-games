@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+// import { RouterLink, RouterView } from 'vue-router'
 import Motus from './components/Motus/Motus.vue'
 </script>
 
 <template>
-  <Motus :input="null"/>
+  <Motus />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
