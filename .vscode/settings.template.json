@@ -12,12 +12,6 @@
 
   "stylelint.validate": ["css", "scss"],
   "eslint.validate": ["javascript", "javascriptreact", "yaml", "json", "jsonc", "json5", "vue"],
-  "eslint.workingDirectories": [
-    "./packages/core",
-    "./packages/integrations/*",
-    "./packages/products/*",
-    "./packages/themes/*"
-  ],
 
   "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
   "[vue]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
