@@ -1,19 +1,27 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-    letter: string
-    isCorrect: boolean
-    isInside: boolean
-}>(), {
-    letter : '',
-    isCorrect: false,
-    isInside: false,
-})
+import type { Letter } from '@/types/motus/Letter';
+import LetterStatus from '../LetterStatus';
+
+const props = defineProps<{
+    letter: Letter|undefined
+}>()
+
+const getClass = (status: LetterStatus|null): string[] => {
+    const returnValue = ['grid-row-item'];
+    if (status === LetterStatus.CORRECT) {
+        returnValue.push('grid-row-item__correct');
+    } else if (status === LetterStatus.MISPLACED) {
+        returnValue.push('grid-row-item__misplaced');
+    }
+
+    return returnValue;
+}
 
 </script>
 
 <template>
-    <div :class="['grid-row-item', letter === ' ' ? 'grid-row-item__space' : isCorrect ? 'grid-row-item__correct' : isInside ? 'grid-row-item__inside' : '']">
-        {{ letter.toUpperCase()  }}
+    <div :class="getClass(props.letter === undefined ? null : props.letter?.status)">
+        {{ props.letter?.value.toUpperCase()  }}
     </div>
 </template>
 
@@ -34,11 +42,7 @@ const props = withDefaults(defineProps<{
         background-color: red;
     }
 
-    .grid-row-item__inside {
+    .grid-row-item__misplaced {
         background-color: orange;
-    }
-
-    .grid-row-item__space {
-        background-color: blue;
     }
 </style>

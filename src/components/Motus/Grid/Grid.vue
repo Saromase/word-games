@@ -1,15 +1,14 @@
 <script setup lang="ts">
+import type { Grid } from '@/types/motus/Grid';
 import GridRow from './GridRow.vue';
 
 
 const props = defineProps<{
-    word: string
-    currentAttempt : number
-    attempts: string[]
-    input: string|null
     class: string
+    grid: Grid
 }>()
 
+console.log(props.grid)
 </script>
 
 <template>
@@ -17,12 +16,10 @@ const props = defineProps<{
         <GridRow 
             v-for="n in 6"
             :key="n"
-            :word-length="word.length"
-            :word="n === currentAttempt ? input ?? '' : word"
-            :is-current-attempt="n === currentAttempt"
-            :is-active="n === currentAttempt"
-            :attempt="attempts?.[n-1] ?? null"
-            :class="class"
+            :class="props.class"
+            :row="props.grid.rows[n-1]"
+            :size="props.grid.word.length"
+
         />
     </div>
 </template>
