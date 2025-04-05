@@ -1,6 +1,6 @@
 import type { Letter } from '@/types/motus/Letter';
 import type { Row } from '@/types/motus/Row';
-import LetterStatus from './LetterStatus';
+import LetterStatus from '@/enum/LetterStatus';
 import type { Grid as GridType } from '@/types/motus/Grid';
 import { ref, type Ref } from 'vue';
 import type { Motus } from '@/types/motus/Motus';
@@ -16,6 +16,18 @@ export function useGameLogic(motus: Ref<Motus>) {
       hasError.value = false;
     }, 1300);
   };
+
+  const initKeyboard = (): Letter[] => {
+    const alphabet = [];
+    for (let i = 65; i <= 90; i++) {
+      alphabet.push({
+        status : LetterStatus.INPUT,
+        value: String.fromCharCode(i)
+      }); // Convertit le code ASCII en lettre
+    }
+
+    return alphabet
+  }
 
   const startNewGame = () => {
     const word = pickWord();
@@ -38,6 +50,7 @@ export function useGameLogic(motus: Ref<Motus>) {
     if (motus.value.currentGrid.word === '') {
       motus.value = {
         currentGrid: grid,
+        keyboard: initKeyboard(),
         history: [],
       } as Motus;
     } else {

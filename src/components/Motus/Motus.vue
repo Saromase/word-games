@@ -7,8 +7,9 @@ import MotusWinAnimation from './MotusWinAnimation.vue'
 import type { Motus } from '@/types/motus/Motus'
 import { useGameLogic } from './useGameLogic'
 import { useInput } from './useInput'
+import Keyboard from './Keyboard/Keyboard.vue'
 
-const motus = ref<Motus>({ currentGrid: { rows: [], try: 0, word: '' }, history: [] })
+const motus = ref<Motus>({ currentGrid: { rows: [], try: 0, word: '' }, keyboard: [], history: [] })
 
 // const currentGrid = ref<GridType>()
 // const history = ref<GridType[]>([])
@@ -18,6 +19,7 @@ const { startNewGame, submitWord, hasError, winAnimation } = useGameLogic(motus)
 useInput(motus, submitWord)
 
 startNewGame()
+console.log(motus.value.keyboard)
 </script>
 
 <template>
@@ -25,6 +27,7 @@ startNewGame()
     <MotusWinAnimation v-if="winAnimation" />
     <h1 class="green">Motus</h1>
     <Grid :class="{ shake: hasError }" :grid="motus.currentGrid" />
+    <Keyboard layout="AZERTY"/>
   </div>
 </template>
 

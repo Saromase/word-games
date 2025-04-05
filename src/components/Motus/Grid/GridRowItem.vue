@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Letter } from '@/types/motus/Letter';
-import LetterStatus from '../LetterStatus';
+import LetterStatus from '../../../enum/LetterStatus';
 
 const props = defineProps<{
     letter: Letter|undefined

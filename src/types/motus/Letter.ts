@@ -1,4 +1,4 @@
-import type LetterStatus from "@/components/Motus/LetterStatus"
+import type LetterStatus from "@/enum/LetterStatus"
 
 export type Letter = {
     value: string

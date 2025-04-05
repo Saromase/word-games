@@ -1,6 +1,6 @@
 import type { Letter } from '@/types/motus/Letter';
 import { onMounted, onUnmounted, type Ref } from 'vue';
-import LetterStatus from './LetterStatus';
+import LetterStatus from '../../enum/LetterStatus';
 import type { Motus } from '@/types/motus/Motus';
 
 export function useInput(motus: Ref<Motus>, submitWord: () => void) {
