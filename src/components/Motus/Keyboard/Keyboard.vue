@@ -3,9 +3,9 @@ import type { Keyboard, KeyboardLayout, KeyboardLetter } from '@/types/motus/Key
 import { computed } from 'vue'
 
 const props = defineProps<{
-  corrects: string[]
-  misplaced: string[]
-  disabled: string[]
+  corrects: KeyboardLetter[]
+  misplaced: KeyboardLetter[]
+  disabled: KeyboardLetter[]
   layout: KeyboardLayout
 }>()
 
@@ -17,8 +17,8 @@ const layout_params = {
 
 const layout = computed(() => {
   const keyboard = [[], [], []] as Keyboard
-
   const letters = [...layout_params[props.layout]] as KeyboardLetter[]
+
   return letters.reduce<Keyboard>((out, letter, index) => {
     if (index < 10) {
       out[0].push(letter)
@@ -38,9 +38,9 @@ const layout = computed(() => {
       <div
         :class="[
           'letter',
+          misplaced.includes(letter) ? 'misplaced' : '',
           corrects.includes(letter) ? 'correct' : '',
           disabled.includes(letter) ? 'disabled' : '',
-          misplaced.includes(letter) ? 'misplaced' : '',
         ]"
         v-for="letter in row"
         :key="letter"

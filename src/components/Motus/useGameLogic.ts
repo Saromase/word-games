@@ -5,6 +5,7 @@ import type { Grid as GridType } from '@/types/motus/Grid';
 import { ref, type Ref } from 'vue';
 import type { Motus } from '@/types/motus/Motus';
 import wordList from './../../dictionary/motus.json';
+import type { KeyboardLetter } from '@/types/motus/Keyboard';
 
 export function useGameLogic(motus: Ref<Motus>) {
   const hasError = ref<boolean>(false);
@@ -149,5 +150,13 @@ export function useGameLogic(motus: Ref<Motus>) {
     return getRandomElement(wordList[randomNumber.toString()][letter]);
   };
 
-  return { startNewGame, submitWord, hasError, winAnimation };
+  const getLettersByStatus = (status: LetterStatus) => {
+    return motus.value.currentGrid.rows.flatMap(row =>
+        row.letters.filter(letter => letter.status === status).map(letter =>
+          letter.value.toUpperCase() as KeyboardLetter
+        )
+      )
+  };
+
+  return { startNewGame, submitWord, hasError, winAnimation, getLettersByStatus };
 }

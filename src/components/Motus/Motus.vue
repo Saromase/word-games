@@ -11,27 +11,21 @@ import LetterStatus from '@/enum/LetterStatus'
 
 const motus = ref<Motus>({ currentGrid: { rows: [], try: 0, word: '' }, keyboard: [], history: [] })
 
-const { startNewGame, submitWord, hasError, winAnimation } = useGameLogic(motus)
+const { startNewGame, submitWord, hasError, winAnimation, getLettersByStatus } = useGameLogic(motus)
 
 useInput(motus, submitWord)
 
-const corrects = computed(() => {
-  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.CORRECT).map((letter) => letter.value.toUpperCase()))
-})
 
-const disabled = computed(() => {
-  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.BAD).map((letter) => letter.value.toUpperCase()))
-})
 
-const misplaced = computed(() => {
-  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.MISPLACED).map((letter) => letter.value.toUpperCase()))
-})
+const corrects = computed(() => getLettersByStatus(LetterStatus.CORRECT));
+const disabled = computed(() => getLettersByStatus(LetterStatus.BAD));
+const misplaced = computed(() =>getLettersByStatus(LetterStatus.MISPLACED));
 
 startNewGame()
 </script>
 
 <template>
-  <div class="greetings">
+  <div class="game">
     <MotusWinAnimation v-if="winAnimation" />
     <h1 class="green">Motus</h1>
     <Grid :class="{ shake: hasError }" :grid="motus.currentGrid" />
@@ -45,14 +39,12 @@ h1 {
   font-size: 2.6rem;
   position: relative;
   top: -10px;
+  text-align: center;
 }
 
 h3 {
   font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
   text-align: center;
 }
+
 </style>
