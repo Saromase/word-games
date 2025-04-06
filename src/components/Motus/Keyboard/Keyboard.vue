@@ -18,7 +18,7 @@ const layout_params = {
 const layout = computed(() => {
   const keyboard = [[], [], []] as Keyboard
 
-  const letters = [...(layout_params[props.layout])] as KeyboardLetter[]
+  const letters = [...layout_params[props.layout]] as KeyboardLetter[]
   return letters.reduce<Keyboard>((out, letter, index) => {
     if (index < 10) {
       out[0].push(letter)
@@ -35,7 +35,18 @@ const layout = computed(() => {
 <template>
   <div class="keyboard">
     <div class="row" v-for="(row, key) in layout" :key>
-      <div class="letter" v-for="letter in row" :key="letter">{{ letter }}</div>
+      <div
+        :class="[
+          'letter',
+          corrects.includes(letter) ? 'correct' : '',
+          disabled.includes(letter) ? 'disabled' : '',
+          misplaced.includes(letter) ? 'misplaced' : '',
+        ]"
+        v-for="letter in row"
+        :key="letter"
+      >
+        {{ letter }}
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +77,18 @@ const layout = computed(() => {
   background-color: #f1f1f1;
   cursor: pointer;
   border-radius: 5px;
+}
+
+.correct {
+  background-color: red;
+}
+
+.misplaced {
+  background-color: orange;
+}
+
+.disabled {
+  background-color: gainsboro;
 }
 
 .letter:hover {

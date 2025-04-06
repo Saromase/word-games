@@ -4,11 +4,9 @@ import type { Letter } from '@/types/motus/Letter';
 import LetterStatus from '@/enum/LetterStatus';
 
 
-const props = defineProps<{
+defineProps<{
   letter: Letter
 }>()
-
-console.log(props.letter)
 
 const getClass = (status: LetterStatus) => {
   if (status === LetterStatus.BAD) {

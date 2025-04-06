@@ -6,8 +6,6 @@ const props = defineProps<{
   row: Row | undefined
   size: number
 }>()
-console.log(props.row)
-console.log(props.size)
 </script>
 
 <template>

@@ -32,7 +32,6 @@ export function useGameLogic(motus: Ref<Motus>) {
   const startNewGame = () => {
     const word = pickWord();
     console.log(word);
-    console.log(motus.value.history);
     const letter: Letter = {
       status: LetterStatus.CORRECT,
       value: word[0],
@@ -91,7 +90,6 @@ export function useGameLogic(motus: Ref<Motus>) {
       const activeRow = currentGrid.rows.find((row) => row.active);
 
       if (!activeRow) return LetterStatus.INPUT;
-      console.log(grid.word, index, input, grid.word[index] === input);
 
       if (grid.word[index] === input) {
         return LetterStatus.CORRECT;
@@ -102,35 +100,27 @@ export function useGameLogic(motus: Ref<Motus>) {
           return [...str].reduce((count, char) => (char === letter ? count + 1 : count), 0);
         };
 
-        const letterOccurence = countLetterOccurrences(grid.word, input);
-        const currentUsage = activeRow.letters
-          .slice(0, index)
-          .map((letter) => letter.value)
-          .join('');
-        const currentOccurence = countLetterOccurrences(currentUsage, input);
-        console.log(letterOccurence, input, currentUsage, currentOccurence);
-        if (letterOccurence > 1) {
-          if (letterOccurence > currentOccurence) {
+        const wordInput = activeRow.letters.map((letter) => letter.value)
+        const wordOccurence = countLetterOccurrences(grid.word, input);
+        const actuallyOccurence = countLetterOccurrences(wordInput.slice(0, index).join(''), input);
+        const wordInputOccurence = countLetterOccurrences(wordInput.join(''), input);
+
+        if (wordOccurence > 1) {
+          if (wordOccurence > actuallyOccurence) {
             return LetterStatus.MISPLACED;
           } else {
             return LetterStatus.BAD;
           }
-        } else if (letterOccurence === currentOccurence) {
+        } else if (wordOccurence === actuallyOccurence) {
+          return LetterStatus.BAD;
+        } else if (wordInputOccurence > wordOccurence) {
           return LetterStatus.BAD;
         } else {
           return LetterStatus.MISPLACED;
         }
       }
-
-      return LetterStatus.INPUT;
+      return LetterStatus.BAD;
     };
-
-    console.log(
-      activeRow.letters.map((letter, index) => ({
-        ...letter,
-        status: evaluateLetterStatus(currentGrid, letter.value, index),
-      })),
-    );
 
     activeRow.letters = activeRow.letters.map((letter, index) => ({
       ...letter,
@@ -153,7 +143,6 @@ export function useGameLogic(motus: Ref<Motus>) {
 
   const pickWord = () => {
     const randomNumber = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
-    // const randomNumber = 5;
     const alphabet = 'abcdefghijlmnopqrstuv';
     const letter = alphabet[Math.floor(Math.random() * alphabet.length)];
 

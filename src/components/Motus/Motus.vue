@@ -1,25 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Grid from './Grid/Grid.vue'
-// import type { Grid as GridType } from '@/types/motus/Grid'
 
 import MotusWinAnimation from './MotusWinAnimation.vue'
 import type { Motus } from '@/types/motus/Motus'
 import { useGameLogic } from './useGameLogic'
 import { useInput } from './useInput'
 import Keyboard from './Keyboard/Keyboard.vue'
+import LetterStatus from '@/enum/LetterStatus'
 
 const motus = ref<Motus>({ currentGrid: { rows: [], try: 0, word: '' }, keyboard: [], history: [] })
-
-// const currentGrid = ref<GridType>()
-// const history = ref<GridType[]>([])
 
 const { startNewGame, submitWord, hasError, winAnimation } = useGameLogic(motus)
 
 useInput(motus, submitWord)
 
+const corrects = computed(() => {
+  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.CORRECT).map((letter) => letter.value.toUpperCase()))
+})
+
+const disabled = computed(() => {
+  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.BAD).map((letter) => letter.value.toUpperCase()))
+})
+
+const misplaced = computed(() => {
+  return motus.value.currentGrid.rows.flatMap((row) => row.letters.filter((letter) => letter.status === LetterStatus.MISPLACED).map((letter) => letter.value.toUpperCase()))
+})
+
 startNewGame()
-console.log(motus.value.keyboard)
 </script>
 
 <template>
@@ -27,7 +35,7 @@ console.log(motus.value.keyboard)
     <MotusWinAnimation v-if="winAnimation" />
     <h1 class="green">Motus</h1>
     <Grid :class="{ shake: hasError }" :grid="motus.currentGrid" />
-    <Keyboard layout="AZERTY"/>
+    <Keyboard layout="AZERTY" :corrects :disabled :misplaced />
   </div>
 </template>
 
